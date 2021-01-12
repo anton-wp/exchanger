@@ -1,45 +1,61 @@
 import Tables from './table'
 import Chart from './chart'
-
+import { BASE_URL } from './const'
 import { useState, useEffect } from 'react';
+import { Switch, Select, Spin, Skeleton } from 'antd';
 
+const timeIntervals = [7, 14, 20, 30]
 
+export default function InteractiveBlock({ base }) {
+  const { Option } = Select;
+  const [data, setData] = useState([])
+  const [date, setDate] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [switchValue, setSwitchValue] = useState(false)
+  const [period, setPeriod] = useState(null)
 
+  useEffect(() => {
+    updateDate(timeIntervals[0])
+  }, []);
 
-const date = [
-    '20200311',
-    '20200310',
-    '20200309',
-    '20200308',
-    '20200307',
-    '20200306',
-    '20200305',
-    '20200304',
-    '20200303',
-    '20200302',
-    '20200301',
-]
+  useEffect(async () => {
+    let exp = []
+    setLoading(true)
+    for (const item of date) {
+      const res = await fetch(`${BASE_URL}?valcode=${base.cc}&date=${item}&json`)
+      const json = await res.json()
+      exp.push(json[0])
+    }
+    setData(exp)
+    setLoading(false)
+  }, [base, date])
 
-export default function InteractiveBlock({ base, switchValue }) {
-    const [data, setData] = useState([])
+  const updateDate = (e) => {
+    setPeriod(e)
+    const dates = []
+    for (let i = 0; i < e; i++) {
+      const day = new Date(new Date().getTime() - i * 86400000).toISOString().slice(0, 10).replace(/-/gi, '')
+      dates.push(day)
+    }
+    setDate(dates)
+  }
+  return (
+    <>
+      <div className="mx-20 d-flex justify-content-s-b">
+        <div>
+          Table <Switch onChange={e => setSwitchValue(e)} checked={switchValue} /> Chart
+        </div>
+        <Select value={period} onChange={e => updateDate(e)}>
+          {timeIntervals.map((item, index) => (
+            <Option key={index} value={item}>{item}</Option>
+          ))}
+        </Select>
 
-
-
-
-
-    useEffect(async () => {
-        let exp = []
-        for (const item of date) {
-            const res = await fetch(`https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=${base.ccy}&date=${item}&json`)
-            const json = await res.json()
-            exp.push(json[0])
-        }
-        setData(exp)
-    }, [base])
-    return (
-        <>
-            {!switchValue ? <Tables data={data} /> :
-                <Chart data={data} date={date} base={base} />}
-        </>
-    )
+      </div>
+      {/* {loading && <Spin size="large" />} */}
+      {/* {loading && <Skeleton active paragraph={{ rows: 12 }} />} */}
+      {!switchValue ? <Tables data={data} loading={loading} /> :
+        (!loading ? <Chart data={data} date={date} base={base} /> : <Spin size="large" />)}
+    </>
+  )
 }

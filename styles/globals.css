@@ -14,3 +14,42 @@ a {
 * {
   box-sizing: border-box;
 }
+.container {
+  display: flex;
+  justify-content: center;;
+  flex-direction: column;
+  margin: 100px 20px 0px;
+  display:flex;
+}
+.d-flex{
+  display: flex;
+}
+.d-i-block{
+  display: inline-block;
+}
+.justify-content-center{
+  justify-content: center;
+}
+.justify-content-s-a{
+  justify-content: space-around;
+}
+.justify-content-s-b{
+  justify-content: space-between;
+}
+
+.align-items-center{
+  align-items: center;
+}
+.w-100{
+  width:100%
+}
+.wrap-flex{
+  flex-wrap: wrap;
+}
+.mx-20{
+  margin: 20px 0;
+}
+.mw-300{
+  max-width:300px
+}
+
