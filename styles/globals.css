@@ -43,6 +43,9 @@ a {
 .w-100{
   width:100%
 }
+.w-80p{
+  width:80px;
+}
 .wrap-flex{
   flex-wrap: wrap;
 }

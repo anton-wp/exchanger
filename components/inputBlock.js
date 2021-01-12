@@ -28,7 +28,16 @@ export default function InputBlock({ currency, base, setBase }) {
     <div className="wrap-flex mx-20">
       <div className="d-flex justify-content-center w-100">
         <div className="d-flex w-100 mw-300 justify-content-s-a align-items-center mx-20">
-          <Select defaultValue={currency[0].cc} onChange={handleChange}>
+          <Select
+            showSearch
+            className="w-80p"
+            defaultValue={currency[0].cc}
+            onChange={handleChange}
+            optionFilterProp="children"
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
             {currency.map((item, index) => (
               <Option key={index} value={item.cc}>{item.cc}</Option>
             ))}

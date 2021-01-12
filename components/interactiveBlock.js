@@ -2,7 +2,7 @@ import Tables from './table'
 import Chart from './chart'
 import { BASE_URL } from './const'
 import { useState, useEffect } from 'react';
-import { Switch, Select, Spin, Skeleton } from 'antd';
+import { Switch, Select, Spin } from 'antd';
 
 const timeIntervals = [7, 14, 20, 30]
 
@@ -52,8 +52,6 @@ export default function InteractiveBlock({ base }) {
         </Select>
 
       </div>
-      {/* {loading && <Spin size="large" />} */}
-      {/* {loading && <Skeleton active paragraph={{ rows: 12 }} />} */}
       {!switchValue ? <Tables data={data} loading={loading} /> :
         (!loading ? <Chart data={data} date={date} base={base} /> : <Spin size="large" />)}
     </>

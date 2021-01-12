@@ -1,7 +1,7 @@
 import { Line } from 'react-chartjs-2'
 
 export default function Chart({ data, base }) {
-  const data1 = {
+  const state = {
     labels: data.map(item => item.exchangedate),
     datasets: [
       {
@@ -18,13 +18,13 @@ export default function Chart({ data, base }) {
     scales: {
       yAxes: [{
         ticks: {
-          suggestedMin: Math.min(...data.map(item => item.rate)) - 1,
-          suggestedMax: Math.max(...data.map(item => item.rate)) + 1,
+          suggestedMin: Math.min(...data.map(item => item.rate)) - Math.min(...data.map(item => item.rate)) * 0.01,
+          suggestedMax: Math.max(...data.map(item => item.rate)) + Math.max(...data.map(item => item.rate)) * 0.01,
         }
       }]
     }
   }
   return (
-    <Line data={data1} options={options} />
+    <Line data={state} options={options} />
   )
 }
