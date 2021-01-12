@@ -4,7 +4,7 @@ import { BASE_URL } from './const'
 import { useState, useEffect } from 'react';
 import { Switch, Select, Spin } from 'antd';
 
-const timeIntervals = [7, 14, 20, 30]
+const timeIntervals = [7, 14, 20, 30, 120]
 
 export default function InteractiveBlock({ base }) {
   const { Option } = Select;
@@ -37,7 +37,7 @@ export default function InteractiveBlock({ base }) {
       const day = new Date(new Date().getTime() - i * 86400000).toISOString().slice(0, 10).replace(/-/gi, '')
       dates.push(day)
     }
-    setDate(dates)
+    setDate(dates.reverse())
   }
   return (
     <>
