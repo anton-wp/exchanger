@@ -55,4 +55,15 @@ a {
 .mw-300{
   max-width:300px
 }
+.menu{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color:  #001529;
+}
+.logo{
+  color: white !important;
+  font-size: 30px;
+  margin: 20px;
+}
 
