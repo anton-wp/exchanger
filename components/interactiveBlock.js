@@ -2,11 +2,14 @@ import Tables from './table'
 import Chart from './chart'
 import { BASE_URL } from './const'
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import { Switch, Select, Spin } from 'antd';
+
 
 const timeIntervals = [7, 14, 20, 30, 120]
 
-export default function InteractiveBlock({ base }) {
+export default function InteractiveBlock() {
+  const base = useSelector(state => state.exchanger.base)
   const { Option } = Select;
   const [data, setData] = useState([])
   const [date, setDate] = useState([])
@@ -37,7 +40,7 @@ export default function InteractiveBlock({ base }) {
       const day = new Date(new Date().getTime() - i * 86400000).toISOString().slice(0, 10).replace(/-/gi, '')
       dates.push(day)
     }
-    setDate(dates.reverse())
+    setDate(dates)
   }
   return (
     <>
@@ -53,7 +56,7 @@ export default function InteractiveBlock({ base }) {
 
       </div>
       {!switchValue ? <Tables data={data} loading={loading} /> :
-        (!loading ? <Chart data={data} date={date} base={base} /> : <Spin size="large" />)}
+        (!loading ? <Chart data={data.slice().reverse()} date={date} base={base} /> : <Spin size="large" />)}
     </>
   )
 }

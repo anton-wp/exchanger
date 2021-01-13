@@ -1,15 +1,21 @@
 import { InputNumber, Select } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { setBase } from '../redux/actions'
 
-export default function InputBlock({ currency, base, setBase }) {
+export default function InputBlock() {
+  const currency = useSelector(state => state.exchanger.exchanger)
+  const base = useSelector(state => state.exchanger.base)
+  const dispatch = useDispatch();
+
   const { Option } = Select;
   const baseValue = "UAH";
   const [result, setResult] = useState(1)
   const [summ, setSumm] = useState(1)
 
   function handleChange(value) {
-    setBase(currency.find(item => item.cc === value))
+    dispatch(setBase(currency.find(item => item.cc === value)))
   }
   const onChangeSumm = (value) => {
     setSumm(value)
@@ -31,7 +37,7 @@ export default function InputBlock({ currency, base, setBase }) {
           <Select
             showSearch
             className="w-80p"
-            defaultValue={currency[0].cc}
+            defaultValue={base.cc}
             onChange={handleChange}
             optionFilterProp="children"
             filterOption={(input, option) =>
