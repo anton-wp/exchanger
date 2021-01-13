@@ -1,7 +1,6 @@
 import InputBlock from '../components/inputBlock'
 import InteractiveBlock from '../components/interactiveBlock'
-import { initializeStore } from '../store'
-import { fetchCurrency } from '../redux/actions'
+import { BASE_URL } from '../components/const'
 
 import { BankOutlined } from '@ant-design/icons';
 
@@ -19,9 +18,19 @@ export default function Home() {
   )
 }
 
-export async function getServerSideProps() {
-  const reduxStore = initializeStore()
-  const { dispatch } = reduxStore
-  await dispatch(fetchCurrency())
-  return { props: { initialReduxState: reduxStore.getState() } }
+export async function getStaticProps() {
+  const data = await fetch(`${BASE_URL}?json`)
+  const json = await data.json()
+  return {
+    props:
+    {
+      initialReduxState: {
+        exchanger:
+        {
+          exchanger: json,
+          base: json[0]
+        }
+      }
+    }
+  }
 }
