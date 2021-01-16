@@ -23,18 +23,20 @@ export default function Tables({ data, loading }) {
   ];
   const getIndex = (items) => {
     const index = data.findIndex(item => item.exchangedate === items);
-    if (data[index + 1]) {
-      if (data[index].rate > data[index + 1].rate) {
-        return <UpCircleOutlined style={{ color: 'green' }} />
-      } else if (data[index].rate < data[index + 1].rate) {
-        return <DownCircleOutlined style={{ color: 'red' }} />
-      }
-      else {
-        return '-'
-      }
-    } else {
-      return '-'
+    let rateStatus = '-';
+    const nextRate = (data[index + 1] || {}).rate;
+    const currentRate = data[index].rate;
+    if (!nextRate || nextRate === currentRate) {
+      return rateStatus;
     }
+
+    if (currentRate > nextRate) {
+      rateStatus = <UpCircleOutlined style={{ color: 'green' }} />
+    } else {
+      rateStatus = <DownCircleOutlined style={{ color: 'red' }} />
+    }
+
+    return rateStatus;
   }
   return (
     <Table
